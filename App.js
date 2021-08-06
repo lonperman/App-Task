@@ -1,21 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+import HomeScreen from './screens/HomeScreen';
+import TaskFormScreen from './screens/TaskFormScreen';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="HomeScreen" 
+          component={HomeScreen}
+          options={({navigation}) => ({
+            title: 'Tasks App',
+            headerStyle: { backgroundColor: '#222f3e'},
+            headerTitleStyle: { color: '#ffffff'},
+            headerRight: () => (
+              <TouchableOpacity onPress={() => navigation.navigate("TaskFormScreen")}>
+                <Text style={{color: '#ffffff', marginRight: 20, fontSize: 15}}>New</Text>
+              </TouchableOpacity>
+            ),
+        })}
+        />
+        <Stack.Screen name="TaskFormScreen" component={TaskFormScreen}
+          options={{
+            title: 'Create a Task',
+            headerStyle: {
+              backgroundColor: '#222f3e'
+            },
+            headerTitleStyle: { color: '#ffffff'},
+            headerTintColor: '#ffffff'
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
